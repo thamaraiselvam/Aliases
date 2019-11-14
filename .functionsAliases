@@ -1,0 +1,25 @@
+function previewSelection() {
+    directory=$1
+    if [ ! -z  "$directory" ]; then
+        if [ ! -d "$directory" ]; then
+            # cat but with syntax highlighting
+            bat --color=always "$directory"
+        else
+            # ls with colors and git-aware
+            exa --color=always -l --git --git-ignore -h $directory
+        fi
+    fi
+}
+
+function godir() {
+    directory=$(fd -d 5 . ${HOME}/ | fzf --color 16 --preview "source ~/.zshrc && previewSelection {}" )
+    if [ ! -z  "$directory" ]; then
+        if [ ! -d "$directory" ]; then
+            # Its a file. cd to the directory.
+            cd $(dirname "$directory")
+        else
+            # cd to the directory
+            cd $directory
+        fi
+    fi
+}
