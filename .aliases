@@ -156,7 +156,6 @@ findjs_novendor() {
   find . -path "*/vendor" -prune -o -iname "*.js" -print0 | xargs -0 egrep -in --color "$@"
 }
 
-load_file_if_exists "$HOME/.history"
 
 # npm
 alias npm_clean='npm cache clear --force'
@@ -175,4 +174,9 @@ alias clear_smallpdf="find ~/Library -iname '*smallpdf*' -type d -exec rm -rfv {
 
 # tmux
 alias tmn="tmux new-session -A -s"
-
+alias t="tmux a"
+alias h="helm"
+alias m="minikube"
+alias ip="ipconfig getifaddr en0"
+alias ctx="kubectx"
+alias k="kubectl"

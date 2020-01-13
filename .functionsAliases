@@ -23,3 +23,16 @@ function godir() {
         fi
     fi
 }
+
+function mkcdir () {
+    mkdir -p -- "$1" &&
+      cd -P -- "$1"
+}
+
+function tmuxclr() {
+    tmux ls | awk '{print "tmux kill-session -t " substr($1, length(0), (length($1) - 1))}' | bash
+}
+
+function reload(){
+    source ~/.zshrc
+}
