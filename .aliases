@@ -1,180 +1,20 @@
+# general
 alias path='echo -e ${PATH//:/\\n}'
 alias vi="vim"
-alias ping="prettyping --nolegend"
-alias lola="git log --graph --decorate --pretty=oneline --abbrev-commit --all"
 alias less="less -S"
-alias cat='bat'
 alias top='htop'
-alias du="ncdu --color dark -rr -x --exclude .git --exclude .svn  --exclude .asdf --exclude node_modules"
-alias gpthis='git push origin HEAD:$(parse_git_branch)'
-alias grb='git rebase -p'
-alias gup='git fetch origin && grb origin/$(parse_git_branch)'
-alias gf='git fetch origin'
-alias gm='git merge --no-ff'
-alias st="git status"
-# Pretty log
-alias gl='git log --graph --pretty="format:%C(yellow)%h%Cblue%d%Creset %s %C(green) %an, %ar%Creset"'
-
-alias be='bundle exec'
-alias rubo='bundle exec rake rubocop:auto_correct'
-alias brake='be rake brakeman:run\[brakeman-report.html\]'
-
-# TODO: Remove later (kept here for reference): brew cask outdated | xargs brew cask reinstall
-alias bcug="brew cask upgrade --greedy"
-alias bupc='brew bundle check --file=~/Brewfile || brew bundle --file=~/Brewfile; brew bundle cleanup --force --file=~/Brewfile; brew cleanup prune; brew upgrade; brew cask upgrade'
-alias bcg='brew cask outdated --greedy'
-alias aup='asdf plugin-update --all'
-
-alias ff="find . -name $* | grep -v .git"
-alias clear='clear; reset'
-alias lstop='ls -Fhalts | head'
-alias lstime='ls -Fhalts'
 alias cp='cp -p'
-alias breakpointer='script/breakpointer -c druby://localhost:0'
-alias findbrokenlinks='find . -type l | (while read FN ; do test -e "$FN" || ls -ld "$FN"; done)'
-alias clearlogs='rm -vrf */log/*.log'
-alias clearcoverage='rm -vrf */coverage */coverage.data'
-alias clean_bundles_from_git="rm -rfv $GEM_HOME/bundler/gems $GEM_HOME/cache/bundler/git"
-alias reload='source ~/.aliases'
-alias killds="sudo find . -name .DS_Store -exec rm -- {} +"
-alias killloc="sudo find . -name .localized -exec rm -- {} +"
-alias rdm="bundle exec rake db:drop db:create db:migrate db:seed"
-alias rs="rails s -b 0.0.0.0"
-alias rc="rails c"
-alias rdb="rails db"
-alias sp="RAILS_ENV=test rake spec"
-
-if [[ "`uname`" == "Linux" ]]; then
-  alias remove_trailing="find . -type f \( -name '*.*css' -o -name '*.*less' -o -name '*.*js' -o -name '*.*rb' -o -name '*.*ml' -o -name '*.rake' \) -exec sed -i 's/[ ]*$//' {} \;"
-fi
-
-if [[ "`uname`" == "MINGW32_NT-6.2" ]]; then
-  alias remove_trailing="find . -type f \( -name '*.*css' -o -name '*.*less' -o -name '*.*js' -o -name '*.*rb' -o -name '*.*ml' -o -name '*.rake' \) -exec sed -i 's/[ ]*$//' {} \;"
-fi
-
-if [[ "$OSTYPE" = darwin* ]] ; then
-  alias remove_trailing="find . -type f \( -name '*.*css' -o -name '*.*less' -o -name '*.*js' -o -name '*.*rb' -o -name '*.*ml' -o -name '*.rake' \) -exec sed -i '' 's/[ ]*$//' {} \;"
-fi
-
-alias etags="/opt/local/bin/ctags -e \`find (app|spec|lib|config)/**/*.rb\`"
-
-alias ss="./script/rails s thin"
-alias sc="./script/rails console"
-alias sd="./script/rails dbconsole"
-
-# phoenix projects
-alias mc='iex -S mix'
-alias mes='mix ecto.setup'
-alias mer='mix ecto.reset'
-alias mch='MIX_ENV=test mix coveralls.html'
-alias mcd='MIX_ENV=test mix coveralls.detail'
-alias sps='mix phx.server'
-alias spsd='iex -S mix phx.server'
-
-# mongo
-#alias start_mongo='mongod run --config `brew --prefix mongo`/mongod.conf'
-#alias start_mongo='mongod run --config /usr/local/etc/mongod.conf'
-alias start_mongo="brew services start mongodb"
-alias stop_mongo="brew services stop mongodb"
-
-#mysql
-alias start_mysql='mysql.server start'
-alias stop_mysql='mysql.server stop'
-
-#postgres
-# Kept these 2 lines for reference - since we are installing via homebrew, starting the service via homebrew is preferred
-#alias start_postgres='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
-#alias stop_postgres='pg_ctl -D /usr/local/var/postgres stop'
-alias start_postgres="brew services start postgres"
-alias stop_postgres="brew services stop postgres"
-
-# You'll need to restart apache whenever you make a change to vhosts.
-alias restart_apache='sudo apachectl restart'
-
-# You'll need to restart nginx whenever you make a config/initializers change or vhosts change
-alias start_nginx='nginx'
-alias stop_nginx='nginx -s stop'
-
-# By default, your app's error log now goes here. Unless you configure your apps otherwise,
-# it's helpful to have an alias to take you to your error log quickly.
-alias apache_logs='cd /private/var/log/apache2/'
-
-# generate mac addr to escape some free wifi mac addr restrictions
-if [[ "`uname`" == "Linux" ]]; then
-  alias free-wifi="(ifconfig eth0 | grep ether) && (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//' | xargs sudo ifconfig eth0 ether) && (ifconfig eth0 | grep ether)"
-fi
-if [[ "$OSTYPE" = darwin* ]] ; then
-  alias free-wifi="(ifconfig en0 | grep ether) && (openssl rand -hex 6 | sed 's/\(..\)/\1:/g; s/.$//' | xargs sudo ifconfig en0 ether) && (ifconfig en0 | grep ether)"
-  alias flush-dns="sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache;say MacOS DNS cache has been cleared"
-fi
-
-find_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.*" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findrb() {
-  find . -iname "*.rb" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findrb_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.rb" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findyml() {
-  find . -iname "*.yml" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findyml_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.yml" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findrake() {
-  find . -iname "*.rake" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findrake_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.rake" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findrhtml_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.rhtml" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findhtmlerb() {
-  find . -iname "*.html.erb" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findhtmlerb_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.html.erb" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findjs() {
-  find . -iname "*.js*" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-findjs_novendor() {
-  find . -path "*/vendor" -prune -o -iname "*.js" -print0 | xargs -0 egrep -in --color "$@"
-}
-
-
-# npm
-alias npm_clean='npm cache clear --force'
+alias mv='mv -r'
+alias reload='source ~/.zshrc'
 
 # docker
-docker_cleanup() {
-  # docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-  # docker rmi -f $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
-  docker system prune --volumes -f
-}
-
 alias docker_list='docker ps -a && docker images'
-
-# smallpdf
-alias clear_smallpdf="find ~/Library -iname '*smallpdf*' -type d -exec rm -rfv {} \;"
 
 # tmux
 alias tmn="tmux new-session -A -s"
 alias t="tmux a"
+
+#k8s
 alias h="helm"
 alias m="minikube"
 alias ip="ipconfig getifaddr en0"

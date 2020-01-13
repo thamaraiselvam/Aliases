@@ -29,10 +29,12 @@ function mkcdir () {
       cd -P -- "$1"
 }
 
-function tmuxclr() {
-    tmux ls | awk '{print "tmux kill-session -t " substr($1, length(0), (length($1) - 1))}' | bash
+function docker_clean() {
+  # docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+  # docker rmi -f $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
+  docker system prune --volumes -f
 }
 
-function reload(){
-    source ~/.zshrc
+function tmuxclr(){
+    tmux ls | awk '{print "tmux kill-session -t " substr($1, length(0), (length($1) - 1))}' | bash
 }
